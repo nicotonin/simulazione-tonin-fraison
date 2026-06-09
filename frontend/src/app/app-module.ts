@@ -14,10 +14,18 @@ import { LoginComponent } from './pages/login/login.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { NavUserComponent } from './components/nav-user/nav-user.component';
 import { IfAuthenticatedDirective } from '../utils/if-authenticated.directive';
+import { FilmComponent } from './pages/film/film.component';
+import { FilmDetailComponent } from './pages/film/film-detail.component';
+import { CategoryComponent } from './pages/category/category.component';
+import { CategoryDetailComponent } from './pages/category/category-detail.component';
 
 
 @NgModule({
   declarations: [
+    CategoryComponent,
+    CategoryDetailComponent,
+    FilmComponent,
+    FilmDetailComponent,
     App,
     AppComponent,
     LoginComponent,

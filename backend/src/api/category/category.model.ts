@@ -1,13 +1,14 @@
 import { model, Schema } from "mongoose";
 
-const productSchema = new Schema(
+const categorySchema = new Schema(
   {
-    name: { type: String, required: true }
+    name: { type: String, required: true },
+    description: { type: String, required: true }
   },
   { timestamps: true }
 );
 
-productSchema.set("toJSON", {
+categorySchema.set("toJSON", {
   virtuals: true,
   transform: (_, ret) => {
     delete (ret as unknown as any)._id;
@@ -16,7 +17,7 @@ productSchema.set("toJSON", {
   }
 });
 
-productSchema.set("toObject", {
+categorySchema.set("toObject", {
   virtuals: true,
   transform: (_, ret) => {
     delete (ret as unknown as any)._id;
@@ -25,4 +26,4 @@ productSchema.set("toObject", {
   }
 });
 
-export const ProductModel = model("Product", productSchema);
+export const CategoryModel = model("Category", categorySchema);

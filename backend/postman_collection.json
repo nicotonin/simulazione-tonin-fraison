@@ -1,0 +1,634 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Simulazione Tonin Fraison API",
+    "description": "Collection generata automaticamente dal codice backend.\n\nRuoli: user, admin.\nRotte protette richiedono JWT in Authorization: Bearer {{token}}.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register — User (success)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Mario\",\n  \"lastName\": \"Rossi\",\n  \"email\": \"mario.rossi@example.com\",\n  \"role\": \"user\",\n  \"password\": \"Str0ng!Pass\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseurl}}/auth/register",
+              "host": ["{{baseurl}}"],
+              "path": ["auth", "register"]
+            }
+          },
+          "response": [
+            {
+              "name": "201 — Creato con successo",
+              "status": "Created",
+              "code": 201,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"firstName\": \"Mario\",\n  \"lastName\": \"Rossi\",\n  \"role\": \"user\"\n}"
+            },
+            {
+              "name": "400 — Email già in uso",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"error\": \"UserExists\",\n  \"message\": \"username already in use\"\n}"
+            },
+            {
+              "name": "400 — Validation error",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"error\": \"ValidationError\",\n  \"message\": \"password is not strong enough\",\n  \"details\": [\n    {\n      \"property\": \"password\",\n      \"constraints\": {\n        \"isStrongPassword\": \"password is not strong enough\"\n      },\n      \"value\": \"weak\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Register — Admin (success)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Lucia\",\n  \"lastName\": \"Bianchi\",\n  \"email\": \"lucia.bianchi@example.com\",\n  \"role\": \"admin\",\n  \"password\": \"Str0ng!Pass\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseurl}}/auth/register",
+              "host": ["{{baseurl}}"],
+              "path": ["auth", "register"]
+            }
+          },
+          "response": [
+            {
+              "name": "201 — Creato con successo",
+              "status": "Created",
+              "code": 201,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"firstName\": \"Lucia\",\n  \"lastName\": \"Bianchi\",\n  \"role\": \"admin\"\n}"
+            },
+            {
+              "name": "400 — Email già in uso",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"error\": \"UserExists\",\n  \"message\": \"username already in use\"\n}"
+            },
+            {
+              "name": "400 — Validation error (firstName)",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"error\": \"ValidationError\",\n  \"message\": \"FirstName must only contain letters and spaces\",\n  \"details\": [\n    {\n      \"property\": \"firstName\",\n      \"constraints\": {\n        \"matches\": \"FirstName must only contain letters and spaces\"\n      },\n      \"value\": \"Mario123\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login — User (success)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"mario.rossi@example.com\",\n  \"password\": \"Str0ng!Pass\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseurl}}/auth/login",
+              "host": ["{{baseurl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "response": [
+            {
+              "name": "200 — Login riuscito",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"user\": {\n    \"firstName\": \"Mario\",\n    \"lastName\": \"Rossi\",\n    \"role\": \"user\"\n  },\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n}"
+            },
+            {
+              "name": "400 — Email errata",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"error\": \"LoginError\",\n  \"message\": \"invalid email\"\n}"
+            },
+            {
+              "name": "400 — Password errata",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"error\": \"LoginError\",\n  \"message\": \"password supplied\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login — Admin (success)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"lucia.bianchi@example.com\",\n  \"password\": \"Str0ng!Pass\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseurl}}/auth/login",
+              "host": ["{{baseurl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "response": [
+            {
+              "name": "200 — Login riuscito",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"user\": {\n    \"firstName\": \"Lucia\",\n    \"lastName\": \"Bianchi\",\n    \"role\": \"admin\"\n  },\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n}"
+            },
+            {
+              "name": "400 — Email errata",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"error\": \"LoginError\",\n  \"message\": \"invalid email\"\n}"
+            },
+            {
+              "name": "400 — Password errata",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"error\": \"LoginError\",\n  \"message\": \"password supplied\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Users (by role)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseurl}}/users?role=user",
+              "host": ["{{baseurl}}"],
+              "path": ["users"],
+              "query": [
+                { "key": "role", "value": "user" }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 — Lista utenti",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "[\n  {\n    \"firstName\": \"Mario\",\n    \"lastName\": \"Rossi\",\n    \"role\": \"user\"\n  },\n  {\n    \"firstName\": \"Lucia\",\n    \"lastName\": \"Bianchi\",\n    \"role\": \"admin\"\n  }\n]"
+            },
+            {
+              "name": "400 — Role non valido",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"error\": \"ValidationError\",\n  \"message\": \"role must be one of the following values: utente, admin\",\n  \"details\": [\n    {\n      \"property\": \"role\",\n      \"constraints\": {\n        \"isIn\": \"role must be one of the following values: utente, admin\"\n      },\n      \"value\": \"sconosciuto\"\n    }\n  ]\n}"
+            },
+            {
+              "name": "401 — Token mancante / non valido",
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Category",
+      "item": [
+        {
+          "name": "List Categories",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseurl}}/categorys",
+              "host": ["{{baseurl}}"],
+              "path": ["categorys"]
+            }
+          },
+          "response": [
+            {
+              "name": "200 — Lista categorie",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "[\n  {\n    \"name\": \"Azione\",\n    \"description\": \"Film d'azione e avventura\"\n  },\n  {\n    \"name\": \"Commedia\",\n    \"description\": \"Film comici e leggeri\"\n  }\n]"
+            },
+            {
+              "name": "401 — Token mancante / non valido",
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Category by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseurl}}/categorys/507f1f77bcf86cd799439011",
+              "host": ["{{baseurl}}"],
+              "path": ["categorys", "507f1f77bcf86cd799439011"]
+            }
+          },
+          "response": [
+            {
+              "name": "200 — Categoria trovata",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"name\": \"Azione\",\n  \"description\": \"Film d'azione e avventura\"\n}"
+            },
+            {
+              "name": "404 — Non trovata",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Non trovato\"\n}"
+            },
+            {
+              "name": "401 — Token mancante / non valido",
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json", "type": "text" },
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Azione\",\n  \"description\": \"Film d'azione e avventura\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseurl}}/categorys",
+              "host": ["{{baseurl}}"],
+              "path": ["categorys"]
+            }
+          },
+          "response": [
+            {
+              "name": "201 — Creata con successo",
+              "status": "Created",
+              "code": 201,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"name\": \"Azione\",\n  \"description\": \"Film d'azione e avventura\"\n}"
+            },
+            {
+              "name": "400 — Validation error",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"error\": \"ValidationError\",\n  \"message\": \"name should not be empty\",\n  \"details\": [\n    {\n      \"property\": \"name\",\n      \"constraints\": {\n        \"isNotEmpty\": \"name should not be empty\"\n      },\n      \"value\": \"\"\n    }\n  ]\n}"
+            },
+            {
+              "name": "401 — Token mancante / non valido",
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json", "type": "text" },
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Azione — Aggiornata\",\n  \"description\": \"Nuova descrizione\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseurl}}/categorys/507f1f77bcf86cd799439011",
+              "host": ["{{baseurl}}"],
+              "path": ["categorys", "507f1f77bcf86cd799439011"]
+            }
+          },
+          "response": [
+            {
+              "name": "200 — Aggiornata con successo",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"name\": \"Azione — Aggiornata\",\n  \"description\": \"Nuova descrizione\"\n}"
+            },
+            {
+              "name": "404 — Non trovata",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Non trovato\"\n}"
+            },
+            {
+              "name": "400 — Validation error",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"error\": \"ValidationError\",\n  \"message\": \"name must be a string\",\n  \"details\": [\n    {\n      \"property\": \"name\",\n      \"constraints\": {\n        \"isString\": \"name must be a string\"\n      },\n      \"value\": 123\n    }\n  ]\n}"
+            },
+            {
+              "name": "401 — Token mancante / non valido",
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete Category",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseurl}}/categorys/507f1f77bcf86cd799439011",
+              "host": ["{{baseurl}}"],
+              "path": ["categorys", "507f1f77bcf86cd799439011"]
+            }
+          },
+          "response": [
+            {
+              "name": "200 — Eliminata con successo",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Eliminato\"\n}"
+            },
+            {
+              "name": "404 — Non trovata",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Non trovato\"\n}"
+            },
+            {
+              "name": "401 — Token mancante / non valido",
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Film",
+      "item": [
+        {
+          "name": "List Films",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseurl}}/films",
+              "host": ["{{baseurl}}"],
+              "path": ["films"]
+            }
+          },
+          "response": [
+            {
+              "name": "200 — Lista film (con categoria popolata)",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "[\n  {\n    \"name\": \"Inception\",\n    \"description\": \"Un ladro esperto nel furto di segreti dai sogni altrui...\",\n    \"rating\": 8.8,\n    \"releaseDate\": \"2010-07-16T00:00:00.000Z\",\n    \"categoryID\": {\n      \"name\": \"Azione\",\n      \"description\": \"Film d'azione e avventura\"\n    }\n  }\n]"
+            },
+            {
+              "name": "401 — Token mancante / non valido",
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Film by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseurl}}/films/507f1f77bcf86cd799439012",
+              "host": ["{{baseurl}}"],
+              "path": ["films", "507f1f77bcf86cd799439012"]
+            }
+          },
+          "response": [
+            {
+              "name": "200 — Film trovato (con categoria popolata)",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"name\": \"Inception\",\n  \"description\": \"Un ladro esperto nel furto di segreti dai sogni altrui...\",\n  \"rating\": 8.8,\n  \"releaseDate\": \"2010-07-16T00:00:00.000Z\",\n  \"categoryID\": {\n    \"name\": \"Azione\",\n    \"description\": \"Film d'azione e avventura\"\n  }\n}"
+            },
+            {
+              "name": "404 — Non trovato",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Non trovato\"\n}"
+            },
+            {
+              "name": "401 — Token mancante / non valido",
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create Film",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json", "type": "text" },
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Inception\",\n  \"description\": \"Un ladro esperto nel furto di segreti dai sogni altrui...\",\n  \"rating\": 8.8,\n  \"releaseDate\": \"2010-07-16T00:00:00.000Z\",\n  \"CategoryID\": \"507f1f77bcf86cd799439011\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseurl}}/films",
+              "host": ["{{baseurl}}"],
+              "path": ["films"]
+            }
+          },
+          "response": [
+            {
+              "name": "201 — Creato con successo",
+              "status": "Created",
+              "code": 201,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"name\": \"Inception\",\n  \"description\": \"Un ladro esperto nel furto di segreti dai sogni altrui...\",\n  \"rating\": 8.8,\n  \"releaseDate\": \"2010-07-16T00:00:00.000Z\",\n  \"categoryID\": \"507f1f77bcf86cd799439011\"\n}"
+            },
+            {
+              "name": "400 — Validation error",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"error\": \"ValidationError\",\n  \"message\": \"rating must be a number conforming to the specified constraints\",\n  \"details\": [\n    {\n      \"property\": \"rating\",\n      \"constraints\": {\n        \"isNumber\": \"rating must be a number conforming to the specified constraints\"\n      },\n      \"value\": \"otto\"\n    }\n  ]\n}"
+            },
+            {
+              "name": "400 — CategoryID non valido",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"error\": \"ValidationError\",\n  \"message\": \"CategoryID must be a mongodb id\",\n  \"details\": [\n    {\n      \"property\": \"CategoryID\",\n      \"constraints\": {\n        \"isMongoId\": \"CategoryID must be a mongodb id\"\n      },\n      \"value\": \"abc\"\n    }\n  ]\n}"
+            },
+            {
+              "name": "401 — Token mancante / non valido",
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Film",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json", "type": "text" },
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Inception — Edizione Speciale\",\n  \"rating\": 9.0\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseurl}}/films/507f1f77bcf86cd799439012",
+              "host": ["{{baseurl}}"],
+              "path": ["films", "507f1f77bcf86cd799439012"]
+            }
+          },
+          "response": [
+            {
+              "name": "200 — Aggiornato con successo",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"name\": \"Inception — Edizione Speciale\",\n  \"description\": \"Un ladro esperto nel furto di segreti dai sogni altrui...\",\n  \"rating\": 9.0,\n  \"releaseDate\": \"2010-07-16T00:00:00.000Z\",\n  \"categoryID\": \"507f1f77bcf86cd799439011\"\n}"
+            },
+            {
+              "name": "404 — Non trovato",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Non trovato\"\n}"
+            },
+            {
+              "name": "400 — Validation error",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"error\": \"ValidationError\",\n  \"message\": \"rating must be a number conforming to the specified constraints\",\n  \"details\": [\n    {\n      \"property\": \"rating\",\n      \"constraints\": {\n        \"isNumber\": \"rating must be a number conforming to the specified constraints\"\n      },\n      \"value\": \"nove\"\n    }\n  ]\n}"
+            },
+            {
+              "name": "401 — Token mancante / non valido",
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete Film",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseurl}}/films/507f1f77bcf86cd799439012",
+              "host": ["{{baseurl}}"],
+              "path": ["films", "507f1f77bcf86cd799439012"]
+            }
+          },
+          "response": [
+            {
+              "name": "200 — Eliminato con successo",
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Eliminato\"\n}"
+            },
+            {
+              "name": "404 — Non trovato",
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Non trovato\"\n}"
+            },
+            {
+              "name": "401 — Token mancante / non valido",
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
